@@ -1,10 +1,11 @@
 <div align="center">
 
-# MONIKA
-### Monitoring Kualitas Air — IoT Aquaculture Platform
+# MONIKA — Mobile App
+### Dashboard Pemantauan Kualitas Air Tambak Udang
 
 <p>
-  Aplikasi mobile berbasis IoT untuk pemantauan kualitas air tambak udang secara <strong>real-time</strong>, dilengkapi sensor pH, suhu, dan TDS yang terhubung ke ESP32 melalui Firebase.
+  Aplikasi mobile React Native untuk memantau data sensor ESP32 secara <strong>real-time</strong> melalui Firebase,
+  dilengkapi grafik historis, export data, dan manajemen perangkat IoT.
 </p>
 
 <img src="./assets/images/monika1.png" alt="MONIKA App Preview" width="600"/>
@@ -15,50 +16,41 @@
 ![Expo](https://img.shields.io/badge/Expo-SDK_54-000020?logo=expo&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-11.1-FFCA28?logo=firebase&logoColor=black)
+![NativeWind](https://img.shields.io/badge/NativeWind-v4-06B6D4?logo=tailwindcss&logoColor=white)
 
 </div>
 
 ---
 
-## Tampilan Aplikasi
+## Tampilan di Perangkat
 
 <div align="center">
-  <img src="./assets/images/monika2.png" alt="MONIKA Real Device" width="350"/>
+  <img src="./assets/images/monika2.png" alt="MONIKA pada perangkat nyata" width="360"/>
 </div>
 
 ---
 
-## Fitur Utama
+## Fitur
 
 | Fitur | Deskripsi |
 |---|---|
-| **Realtime Monitoring** | Pantau nilai pH, Suhu, dan TDS secara langsung dari sensor ESP32 |
-| **Grafik Historis** | Visualisasi data kualitas air dalam bentuk line chart berdasarkan rentang tanggal |
-| **Export Data** | Unduh rekap data sensor ke format file untuk analisis lebih lanjut |
-| **Manajemen Alat** | Koneksi ke perangkat ESP32 via QR Code scan |
-| **Notifikasi** | Peringatan otomatis ketika nilai sensor di luar ambang normal |
-| **Autentikasi** | Login dan registrasi akun pengguna via Firebase Auth |
-| **Multi-device** | Satu akun dapat mengelola beberapa perangkat ESP32 |
+| **Realtime Monitoring** | Nilai pH, Suhu, dan TDS langsung dari ESP32 via Firebase RTDB |
+| **Grafik Historis** | Line chart data sensor dengan filter rentang tanggal |
+| **Export Data** | Unduh rekap data sensor ke file |
+| **Manajemen Alat** | Sambungkan perangkat ESP32 via QR Code scan |
+| **Notifikasi** | Peringatan otomatis saat nilai sensor di luar batas normal |
+| **Autentikasi** | Login & registrasi akun via Firebase Auth |
+| **Multi-device** | Satu akun dapat mengelola beberapa ESP32 |
 
 ---
 
 ## Tech Stack
 
-### Mobile App
-- **[Expo](https://expo.dev)** SDK 54 — framework React Native
-- **[React Native](https://reactnative.dev)** 0.81.5
-- **TypeScript** 5.9
-- **[Expo Router](https://expo.github.io/router)** — file-based navigation
+- **[Expo](https://expo.dev)** SDK 54 dengan **[Expo Router](https://expo.github.io/router)** (file-based navigation)
+- **[React Native](https://reactnative.dev)** 0.81.5 + **TypeScript** 5.9
 - **[NativeWind](https://www.nativewind.dev)** v4 — Tailwind CSS untuk React Native
 - **[Firebase](https://firebase.google.com)** v11 — Auth, Firestore, Realtime Database
 - **[react-native-chart-kit](https://github.com/indiespirit/react-native-chart-kit)** — visualisasi grafik
-
-### Hardware (ESP32)
-- **[PlatformIO](https://platformio.org)** — embedded development platform
-- **Firebase ESP Client** — koneksi Firebase dari ESP32
-- Sensor: pH, EC/TDS, Suhu DS18B20, DO
-- LCD I2C 20x4
-- Web server lokal via ESPAsyncWebServer
 
 ---
 
@@ -67,48 +59,54 @@
 ```
 mobile/
 ├── app/
-│   ├── (auth)/          # Login & Signup
-│   ├── (componens)/     # Header, Notifikasi, Setting, Detail Alat
-│   ├── (tabs)/          # Beranda, Kualitas Air, Udang, Akun
+│   ├── (auth)/
+│   │   ├── Login.tsx
+│   │   └── Signup.tsx
+│   ├── (componens)/
+│   │   ├── Header.tsx
+│   │   ├── Notification.tsx
+│   │   ├── Setting.tsx
+│   │   └── Detailalat.tsx
+│   ├── (tabs)/
+│   │   ├── Beranda.tsx        # Dashboard realtime
+│   │   ├── KualitasAir.tsx    # Grafik & histori data
+│   │   ├── Udang.tsx          # Manajemen udang
+│   │   └── Akun.tsx           # Profil pengguna
 │   └── _layout.tsx
 ├── assets/
 │   ├── fonts/
 │   └── images/
-├── hooks/               # Custom hooks & utilities
-├── firebase.js          # Firebase initialization
-├── .env                 # Credentials (tidak diupload)
-└── .env.example         # Template credentials
+├── hooks/
+│   ├── rtdbPath.ts            # Utility path Realtime DB
+│   ├── QRCodeScanner.tsx      # Scanner QR untuk pairing alat
+│   └── TabBar.tsx
+├── firebase.js                # Firebase initialization
+├── .env                       # Credentials (tidak diupload)
+└── .env.example               # Template credentials
 ```
 
 ---
 
-## Cara Menjalankan
+## Instalasi & Menjalankan
 
 ### Prasyarat
 - Node.js >= 18
-- npm atau yarn
-- [Expo Go](https://expo.dev/go) di HP (untuk development)
+- [Expo Go](https://expo.dev/go) di smartphone (untuk development)
 - Akun Firebase
 
-### Instalasi
+### Langkah Setup
 
-**1. Clone repository**
-```bash
-git clone https://github.com/username/monika.git
-cd monika/mobile
-```
-
-**2. Install dependencies**
+**1. Install dependencies**
 ```bash
 npm install
 ```
 
-**3. Setup environment variables**
+**2. Setup environment variables**
 ```bash
 cp .env.example .env
 ```
 
-Buka file `.env` dan isi dengan nilai dari [Firebase Console](https://console.firebase.google.com):
+Isi `.env` dengan nilai dari [Firebase Console](https://console.firebase.google.com) → Project Settings:
 ```env
 EXPO_PUBLIC_FIREBASE_API_KEY=your-api-key
 EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
@@ -120,55 +118,40 @@ EXPO_PUBLIC_FIREBASE_APP_ID=your-app-id
 EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID=your-measurement-id
 ```
 
-**4. Jalankan aplikasi**
+**3. Jalankan**
 ```bash
 npx expo start
 ```
 
-Scan QR code menggunakan aplikasi Expo Go, atau tekan:
-- `a` — buka di Android Emulator
-- `i` — buka di iOS Simulator
-- `w` — buka di browser
-
----
-
-## Setup Hardware (ESP32)
-
-Lihat direktori [`../esp/`](../esp/) untuk panduan firmware ESP32 lengkap.
-
-```
-esp/
-├── src/
-│   ├── main.cpp             # Program utama
-│   ├── credentials.h        # Credentials (tidak diupload)
-│   └── credentials.h.example
-├── lib/                     # Library sensor
-└── platformio.ini
-```
-
-**Setup credentials ESP32:**
-```bash
-cd ../esp/src
-cp credentials.h.example credentials.h
-# Edit credentials.h dengan WiFi & Firebase credentials kamu
-```
+| Perintah | Platform |
+|---|---|
+| Tekan `a` | Android Emulator |
+| Tekan `i` | iOS Simulator |
+| Tekan `w` | Browser |
+| Scan QR | Expo Go di HP |
 
 ---
 
 ## Konfigurasi Firebase
 
-1. Buat project baru di [Firebase Console](https://console.firebase.google.com)
-2. Aktifkan **Authentication** (Email/Password)
+1. Buat project di [Firebase Console](https://console.firebase.google.com)
+2. Aktifkan **Authentication** → Sign-in method: Email/Password
 3. Aktifkan **Firestore Database**
 4. Aktifkan **Realtime Database**
-5. Tambahkan app Android/iOS dan salin config ke file `.env`
+5. Tambahkan Web App → salin config ke `.env`
 
 **Struktur Realtime Database:**
 ```
 {DEVICE_ID}/
-  ├── PH        (number)
-  ├── TDS       (number)
-  └── Temp      (number)
+  ├── PH      (number)
+  ├── TDS     (number)
+  └── Temp    (number)
+```
+
+**Struktur Firestore:**
+```
+users/{userId}/
+  └── deviceId  (string)  ← ID perangkat ESP32 milik user
 ```
 
 ---
@@ -182,17 +165,15 @@ cp credentials.h.example credentials.h
 | `EXPO_PUBLIC_FIREBASE_DATABASE_URL` | Realtime Database URL |
 | `EXPO_PUBLIC_FIREBASE_PROJECT_ID` | Firebase Project ID |
 | `EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET` | Firebase Storage Bucket |
-| `EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Firebase Messaging Sender ID |
+| `EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Messaging Sender ID |
 | `EXPO_PUBLIC_FIREBASE_APP_ID` | Firebase App ID |
-| `EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID` | Firebase Analytics Measurement ID |
+| `EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID` | Analytics Measurement ID |
 
-> **Catatan:** File `.env` tidak akan pernah diupload ke GitHub. Lihat `.env.example` sebagai referensi.
+> File `.env` tidak pernah diupload ke GitHub. Gunakan `.env.example` sebagai panduan.
 
 ---
 
-## Build untuk Produksi
-
-Proyek ini menggunakan **EAS Build** dari Expo:
+## Build Produksi (EAS Build)
 
 ```bash
 # Install EAS CLI
@@ -201,31 +182,21 @@ npm install -g eas-cli
 # Login ke akun Expo
 eas login
 
-# Build Android APK
+# Build APK (preview/testing)
 eas build --platform android --profile preview
 
-# Build untuk Play Store
+# Build untuk Google Play Store
 eas build --platform android --profile production
 ```
 
 ---
 
-## Kontribusi
-
-1. Fork repository ini
-2. Buat branch baru: `git checkout -b feature/nama-fitur`
-3. Commit perubahan: `git commit -m "feat: tambah fitur X"`
-4. Push ke branch: `git push origin feature/nama-fitur`
-5. Buat Pull Request
-
----
-
 ## Lisensi
 
-Distributed under the MIT License.
+MIT License
 
 ---
 
 <div align="center">
-  <p>Dibuat untuk penelitian pemantauan kualitas air tambak udang</p>
+  <p>Bagian dari sistem MONIKA — <a href="../README.md">Lihat README utama</a></p>
 </div>
