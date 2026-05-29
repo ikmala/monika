@@ -1,0 +1,52 @@
+{
+  "expo": {
+    "name": "monika",
+    "slug": "monika",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon_monika2.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/icon_monika1.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#012957"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "newArchEnabled": true,
+      "softwareKeyboardLayoutMode": "resize",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon_monika1.png",
+        "backgroundColor": "#012957"
+      },
+      "package": "com.ikmal05.UdangHub",
+      "permissions": [
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/icon_monika1.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "@react-native-community/datetimepicker"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "65ad9da4-67f0-4774-98ae-64aeff021348"
+      }
+    },
+    "owner": "ikmal05"
+  }
+}
